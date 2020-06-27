@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">CacheWithRoom</string>
+    <string name="user_id_txt">UserId</string>
+    <string name="name_txt">Name</string>
+    <string name="user_name_txt">UserName</string>
+    <string name="email_txt">Email</string>
+    <string name="address_txt">Address</string>
+    <string name="phone_number_txt">PhoneNumber</string>
+    <string name="website_txt">Website</string>
+    <string name="company_txt">Company</string>
 </resources>
