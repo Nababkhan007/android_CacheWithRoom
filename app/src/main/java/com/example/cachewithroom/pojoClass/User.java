@@ -93,6 +93,10 @@ public class User {
         this.company = company;
     }
 
+    public User(String name) {
+        this.name = name;
+    }
+
     public static class Address {
         @SerializedName("street")
         @Expose
