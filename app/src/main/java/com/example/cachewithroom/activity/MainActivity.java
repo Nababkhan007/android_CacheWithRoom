@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.cachewithroom.R;
@@ -35,6 +35,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
     private ImageView noDataFoundIv;
     private List<User> userList;
     private UserListAdapter userListAdapter;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
     private void getOfflineData() {
         if (!Utility.isNetworkConnected(this)) {
             new GetDataAsyncTask(this, anotherUserDao, anotherUserList,
-                    anotherUserListAdapter, recyclerView, noDataFoundIv).execute();
+                    anotherUserListAdapter, recyclerView, progressBar, noDataFoundIv).execute();
         }
     }
 
@@ -86,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
                         userList = response.body();
 
                         if (userList.size() != 0) {
+                            progressBar.setVisibility(View.GONE);
+
                             userListAdapter = new UserListAdapter(MainActivity.this, true,
                                     userList, MainActivity.this);
                             recyclerView.setLayoutManager(new LinearLayoutManager
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
                             userListAdapter.notifyDataSetChanged();
 
                         } else {
+                            progressBar.setVisibility(View.GONE);
                             noDataFoundIv.setVisibility(View.VISIBLE);
                         }
                     }
@@ -102,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
 
             @Override
             public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(MainActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -110,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
 
     private void initialization() {
         recyclerView = findViewById(R.id.recyclerViewId);
+        progressBar = findViewById(R.id.progressBarId);
         noDataFoundIv = findViewById(R.id.noDataFoundIvId);
         userList = new ArrayList<>();
         anotherUserDatabase = AnotherUserDatabase.getAnotherUserDatabase(this);
@@ -145,16 +151,20 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
         @SuppressLint("StaticFieldLeak")
         RecyclerView recyclerView;
         @SuppressLint("StaticFieldLeak")
+        ProgressBar progressBar;
+        @SuppressLint("StaticFieldLeak")
         ImageView noDataFoundIv;
 
         public GetDataAsyncTask(Context context, AnotherUserDao anotherUserDao, List<AnotherUser> anotherUserList,
-                                AnotherUserListAdapter anotherUserListAdapter, RecyclerView recyclerView, ImageView noDataFoundIv) {
+                                AnotherUserListAdapter anotherUserListAdapter, RecyclerView recyclerView,
+                                ProgressBar progressBar, ImageView noDataFoundIv) {
             this.context = context;
             this.anotherUserDao = anotherUserDao;
             this.anotherUserList = anotherUserList;
             this.anotherUserListAdapter = anotherUserListAdapter;
             this.recyclerView = recyclerView;
             this.noDataFoundIv = noDataFoundIv;
+            this.progressBar = progressBar;
         }
 
         @Override
@@ -169,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
             noDataFoundIv.setVisibility(View.GONE);
 
             if (anotherUserList.size() != 0) {
+                progressBar.setVisibility(View.GONE);
+
                 anotherUserListAdapter = new AnotherUserListAdapter(context, anotherUserList);
                 recyclerView.setLayoutManager(new LinearLayoutManager
                         (context, RecyclerView.VERTICAL, false));
@@ -176,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
                 anotherUserListAdapter.notifyDataSetChanged();
 
             } else {
+                progressBar.setVisibility(View.GONE);
                 noDataFoundIv.setVisibility(View.VISIBLE);
             }
         }
