@@ -54,7 +54,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
             userListViewHolder.websiteTv.setText(context.getText(R.string.website_txt) + ": " + user.getWebsite());
             userListViewHolder.companyTv.setText(context.getText(R.string.company_txt) + ": " + user.getCompany().getName());
 
-            receiveUserInfo.userInfo(UUID.randomUUID().toString(), user.getName());
+            receiveUserInfo.userInfo(UUID.randomUUID().toString(), user.getId().toString(), user.getName(), user.getUsername(),
+                    user.getEmail(), user.getAddress().getStreet() + " " + user.getAddress().getSuite()
+                            + " " + user.getAddress().getCity() + " " + user.getAddress().getZipcode(),
+                    user.getPhone(), user.getWebsite(), user.getCompany().getName());
         }
     }
 

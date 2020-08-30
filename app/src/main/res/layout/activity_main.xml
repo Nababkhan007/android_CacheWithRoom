@@ -11,4 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/noDataFoundIvId"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/no_data_found_image"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
+
 </RelativeLayout>

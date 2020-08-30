@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.cachewithroom.R;
@@ -32,6 +35,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
     private RecyclerView recyclerView;
+    private ImageView noDataFoundIv;
     private List<User> userList;
     private UserListAdapter userListAdapter;
     private AnotherUserDao anotherUserDao;
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
     private void getOfflineData() {
         if (!Utility.isNetworkConnected(this)) {
             new GetDataAsyncTask(this, anotherUserDao, anotherUserList,
-                    anotherUserListAdapter, recyclerView).execute();
+                    anotherUserListAdapter, recyclerView, noDataFoundIv).execute();
         }
     }
 
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
 
     private void fetchUser() {
         userList.clear();
+        noDataFoundIv.setVisibility(View.GONE);
         ApiInterface apiInterface = RetrofitInstance.retrofit().create(ApiInterface.class);
         Call<List<User>> call = apiInterface.getUser();
 
@@ -80,12 +85,17 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
                     if (response.body() != null) {
                         userList = response.body();
 
-                        userListAdapter = new UserListAdapter(MainActivity.this, true,
-                                userList, MainActivity.this);
-                        recyclerView.setLayoutManager(new LinearLayoutManager
-                                (MainActivity.this, RecyclerView.VERTICAL, false));
-                        recyclerView.setAdapter(userListAdapter);
-                        userListAdapter.notifyDataSetChanged();
+                        if (userList.size() != 0) {
+                            userListAdapter = new UserListAdapter(MainActivity.this, true,
+                                    userList, MainActivity.this);
+                            recyclerView.setLayoutManager(new LinearLayoutManager
+                                    (MainActivity.this, RecyclerView.VERTICAL, false));
+                            recyclerView.setAdapter(userListAdapter);
+                            userListAdapter.notifyDataSetChanged();
+
+                        } else {
+                            noDataFoundIv.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             }
@@ -100,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
 
     private void initialization() {
         recyclerView = findViewById(R.id.recyclerViewId);
+        noDataFoundIv = findViewById(R.id.noDataFoundIvId);
         userList = new ArrayList<>();
         anotherUserDatabase = AnotherUserDatabase.getAnotherUserDatabase(this);
         anotherUserDao = anotherUserDatabase.anotherUserDao();
@@ -133,14 +144,17 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
         AnotherUserListAdapter anotherUserListAdapter;
         @SuppressLint("StaticFieldLeak")
         RecyclerView recyclerView;
+        @SuppressLint("StaticFieldLeak")
+        ImageView noDataFoundIv;
 
         public GetDataAsyncTask(Context context, AnotherUserDao anotherUserDao, List<AnotherUser> anotherUserList,
-                                AnotherUserListAdapter anotherUserListAdapter, RecyclerView recyclerView) {
+                                AnotherUserListAdapter anotherUserListAdapter, RecyclerView recyclerView, ImageView noDataFoundIv) {
             this.context = context;
             this.anotherUserDao = anotherUserDao;
             this.anotherUserList = anotherUserList;
             this.anotherUserListAdapter = anotherUserListAdapter;
             this.recyclerView = recyclerView;
+            this.noDataFoundIv = noDataFoundIv;
         }
 
         @Override
@@ -152,18 +166,24 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            noDataFoundIv.setVisibility(View.GONE);
+
             if (anotherUserList.size() != 0) {
                 anotherUserListAdapter = new AnotherUserListAdapter(context, anotherUserList);
                 recyclerView.setLayoutManager(new LinearLayoutManager
                         (context, RecyclerView.VERTICAL, false));
                 recyclerView.setAdapter(anotherUserListAdapter);
                 anotherUserListAdapter.notifyDataSetChanged();
+
+            } else {
+                noDataFoundIv.setVisibility(View.VISIBLE);
             }
         }
     }
 
     @Override
-    public void userInfo(String id, String name) {
-        insert(new AnotherUser(id, name));
+    public void userInfo(String id, String userId, String name, String userName, String email,
+                         String address, String phone, String website, String company) {
+        insert(new AnotherUser(id, userId, name, userName, email, address, phone, website, company));
     }
 }
