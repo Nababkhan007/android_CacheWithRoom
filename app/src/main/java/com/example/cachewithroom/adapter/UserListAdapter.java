@@ -43,16 +43,16 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         final User user = userList.get(i);
 
         if (internetConnection) {
-            userListViewHolder.userIdTv.setText(context.getText(R.string.user_id_txt) + ": " + user.getId());
-            userListViewHolder.nameTv.setText(context.getText(R.string.name_txt) + ": " + user.getName());
-            userListViewHolder.userNameTv.setText(context.getText(R.string.user_name_txt) + ": " + user.getUsername());
-            userListViewHolder.emailTv.setText(context.getText(R.string.email_txt) + ": " + user.getEmail());
-            userListViewHolder.addressTv.setText(context.getText(R.string.address_txt) + ": "
+            userListViewHolder.userIdTv.setText(context.getText(R.string.user_id_text) + ": " + user.getId());
+            userListViewHolder.nameTv.setText(context.getText(R.string.name_text) + ": " + user.getName());
+            userListViewHolder.userNameTv.setText(context.getText(R.string.user_name_text) + ": " + user.getUsername());
+            userListViewHolder.emailTv.setText(context.getText(R.string.email_text) + ": " + user.getEmail());
+            userListViewHolder.addressTv.setText(context.getText(R.string.address_text) + ": "
                     + user.getAddress().getStreet() + " " + user.getAddress().getSuite()
                     + " " + user.getAddress().getCity() + " " + user.getAddress().getZipcode());
-            userListViewHolder.phoneNumberTv.setText(context.getText(R.string.phone_number_txt) + ": " + user.getPhone());
-            userListViewHolder.websiteTv.setText(context.getText(R.string.website_txt) + ": " + user.getWebsite());
-            userListViewHolder.companyTv.setText(context.getText(R.string.company_txt) + ": " + user.getCompany().getName());
+            userListViewHolder.phoneNumberTv.setText(context.getText(R.string.phone_number_text) + ": " + user.getPhone());
+            userListViewHolder.websiteTv.setText(context.getText(R.string.website_text) + ": " + user.getWebsite());
+            userListViewHolder.companyTv.setText(context.getText(R.string.company_text) + ": " + user.getCompany().getName());
 
             receiveUserInfo.userInfo(UUID.randomUUID().toString(), user.getId().toString(), user.getName(), user.getUsername(),
                     user.getEmail(), user.getAddress().getStreet() + " " + user.getAddress().getSuite()

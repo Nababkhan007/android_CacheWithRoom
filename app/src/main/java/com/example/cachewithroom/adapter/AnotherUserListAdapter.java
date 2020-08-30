@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cachewithroom.R;
-import com.example.cachewithroom.pojoClass.User;
 import com.example.cachewithroom.room.AnotherUser;
 
 import java.util.List;
@@ -37,14 +36,14 @@ public class AnotherUserListAdapter extends RecyclerView.Adapter<AnotherUserList
     public void onBindViewHolder(@NonNull final AnotherUserListViewHolder anotherUserListViewHolder, int i) {
         final AnotherUser anotherUser = anotherUserList.get(i);
 
-        anotherUserListViewHolder.userIdTv.setText(context.getText(R.string.user_id_txt) + ": " + anotherUser.getUserId());
-        anotherUserListViewHolder.nameTv.setText(context.getText(R.string.name_txt) + ": " + anotherUser.getName());
-        anotherUserListViewHolder.userNameTv.setText(context.getText(R.string.user_name_txt) + ": " + anotherUser.getUserName());
-        anotherUserListViewHolder.emailTv.setText(context.getText(R.string.email_txt) + ": " + anotherUser.getEmail());
-        anotherUserListViewHolder.addressTv.setText(context.getText(R.string.address_txt) + ": " + anotherUser.getAddress());
-        anotherUserListViewHolder.phoneNumberTv.setText(context.getText(R.string.phone_number_txt) + ": " + anotherUser.getPhone());
-        anotherUserListViewHolder.websiteTv.setText(context.getText(R.string.website_txt) + ": " + anotherUser.getWebsite());
-        anotherUserListViewHolder.companyTv.setText(context.getText(R.string.company_txt) + ": " + anotherUser.getCompany());
+        anotherUserListViewHolder.userIdTv.setText(context.getText(R.string.user_id_text) + ": " + anotherUser.getUserId());
+        anotherUserListViewHolder.nameTv.setText(context.getText(R.string.name_text) + ": " + anotherUser.getName());
+        anotherUserListViewHolder.userNameTv.setText(context.getText(R.string.user_name_text) + ": " + anotherUser.getUserName());
+        anotherUserListViewHolder.emailTv.setText(context.getText(R.string.email_text) + ": " + anotherUser.getEmail());
+        anotherUserListViewHolder.addressTv.setText(context.getText(R.string.address_text) + ": " + anotherUser.getAddress());
+        anotherUserListViewHolder.phoneNumberTv.setText(context.getText(R.string.phone_number_text) + ": " + anotherUser.getPhone());
+        anotherUserListViewHolder.websiteTv.setText(context.getText(R.string.website_text) + ": " + anotherUser.getWebsite());
+        anotherUserListViewHolder.companyTv.setText(context.getText(R.string.company_text) + ": " + anotherUser.getCompany());
     }
 
     @Override
