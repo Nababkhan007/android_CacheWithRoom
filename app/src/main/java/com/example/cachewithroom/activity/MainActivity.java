@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
     }
 
     private void insert(AnotherUser anotherUser) {
-        new InsertAsyncTask(anotherUserDao, anotherUserList).execute(anotherUser);
+        new InsertAsyncTask(anotherUserDao).execute(anotherUser);
     }
 
     private void fetchUser() {
@@ -124,19 +124,16 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
 
     private static class InsertAsyncTask extends AsyncTask<AnotherUser, Void, Void> {
         AnotherUserDao anotherUserDao;
-        List<AnotherUser> anotherUserList;
 
         @SuppressLint("StaticFieldLeak")
 
-        public InsertAsyncTask(AnotherUserDao anotherUserDao, List<AnotherUser> anotherUserList) {
+        public InsertAsyncTask(AnotherUserDao anotherUserDao) {
             this.anotherUserDao = anotherUserDao;
-            this.anotherUserList = anotherUserList;
         }
 
         @Override
         protected Void doInBackground(AnotherUser... anotherUsers) {
             anotherUserDao.insert(anotherUsers[0]);
-            anotherUserList = anotherUserDao.getAllAnotherUserList();
             return null;
         }
     }
