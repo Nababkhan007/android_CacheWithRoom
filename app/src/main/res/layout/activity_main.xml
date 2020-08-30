@@ -6,19 +6,9 @@
     android:background="@color/colorWhite"
     tools:context=".activity.MainActivity">
 
-    <TextView
-        android:id="@+id/nameTvId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:textSize="25sp"
-        android:visibility="gone" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewId"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/nameTvId" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

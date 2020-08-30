@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cachewithroom.R;
+import com.example.cachewithroom.adapter.AnotherUserListAdapter;
 import com.example.cachewithroom.adapter.UserListAdapter;
 import com.example.cachewithroom.apiClass.ApiInterface;
 import com.example.cachewithroom.apiClass.RetrofitInstance;
@@ -31,13 +31,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
-    private TextView nameTv;
     private RecyclerView recyclerView;
     private List<User> userList;
     private UserListAdapter userListAdapter;
     private AnotherUserDao anotherUserDao;
     private AnotherUserDatabase anotherUserDatabase;
     private List<AnotherUser> anotherUserList;
+    private AnotherUserListAdapter anotherUserListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
 
     private void getOfflineData() {
         if (!Utility.isNetworkConnected(this)) {
-            new GetDataAsyncTask(anotherUserDao, anotherUserList, nameTv).execute();
+            new GetDataAsyncTask(this, anotherUserDao, anotherUserList,
+                    anotherUserListAdapter, recyclerView).execute();
         }
     }
 
@@ -64,10 +65,11 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
     }
 
     private void insert(AnotherUser anotherUser) {
-        new InsertAsyncTask(anotherUserDao, anotherUserList, nameTv).execute(anotherUser);
+        new InsertAsyncTask(anotherUserDao, anotherUserList).execute(anotherUser);
     }
 
     private void fetchUser() {
+        userList.clear();
         ApiInterface apiInterface = RetrofitInstance.retrofit().create(ApiInterface.class);
         Call<List<User>> call = apiInterface.getUser();
 
@@ -97,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
     }
 
     private void initialization() {
-        nameTv = findViewById(R.id.nameTvId);
         recyclerView = findViewById(R.id.recyclerViewId);
         userList = new ArrayList<>();
         anotherUserDatabase = AnotherUserDatabase.getAnotherUserDatabase(this);
@@ -107,13 +108,12 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
     private static class InsertAsyncTask extends AsyncTask<AnotherUser, Void, Void> {
         AnotherUserDao anotherUserDao;
         List<AnotherUser> anotherUserList;
-        @SuppressLint("StaticFieldLeak")
-        TextView textView;
 
-        public InsertAsyncTask(AnotherUserDao anotherUserDao, List<AnotherUser> anotherUserList, TextView textView) {
+        @SuppressLint("StaticFieldLeak")
+
+        public InsertAsyncTask(AnotherUserDao anotherUserDao, List<AnotherUser> anotherUserList) {
             this.anotherUserDao = anotherUserDao;
             this.anotherUserList = anotherUserList;
-            this.textView = textView;
         }
 
         @Override
@@ -125,15 +125,22 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
     }
 
     private static class GetDataAsyncTask extends AsyncTask<Void, Void, Void> {
+        @SuppressLint("StaticFieldLeak")
+        Context context;
         AnotherUserDao anotherUserDao;
         List<AnotherUser> anotherUserList;
         @SuppressLint("StaticFieldLeak")
-        TextView textView;
+        AnotherUserListAdapter anotherUserListAdapter;
+        @SuppressLint("StaticFieldLeak")
+        RecyclerView recyclerView;
 
-        public GetDataAsyncTask(AnotherUserDao anotherUserDao, List<AnotherUser> anotherUserList, TextView textView) {
+        public GetDataAsyncTask(Context context, AnotherUserDao anotherUserDao, List<AnotherUser> anotherUserList,
+                                AnotherUserListAdapter anotherUserListAdapter, RecyclerView recyclerView) {
+            this.context = context;
             this.anotherUserDao = anotherUserDao;
             this.anotherUserList = anotherUserList;
-            this.textView = textView;
+            this.anotherUserListAdapter = anotherUserListAdapter;
+            this.recyclerView = recyclerView;
         }
 
         @Override
@@ -146,10 +153,11 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (anotherUserList.size() != 0) {
-                for (AnotherUser anotherUser : anotherUserList) {
-                    textView.setVisibility(View.VISIBLE);
-                    textView.setText(anotherUser.getName());
-                }
+                anotherUserListAdapter = new AnotherUserListAdapter(context, anotherUserList);
+                recyclerView.setLayoutManager(new LinearLayoutManager
+                        (context, RecyclerView.VERTICAL, false));
+                recyclerView.setAdapter(anotherUserListAdapter);
+                anotherUserListAdapter.notifyDataSetChanged();
             }
         }
     }
