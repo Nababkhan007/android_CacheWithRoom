@@ -35,12 +35,15 @@ public class AnotherUser {
     @ColumnInfo(name = "company")
     private String company;
 
+    @ColumnInfo(name = "imageUrl")
+    private String imageUrl;
+
     public AnotherUser() {
     }
 
-    public AnotherUser(@NonNull String id, @NonNull String userId, @NonNull String name,
-                       @NonNull String userName, @NonNull String email, @NonNull String address,
-                       @NonNull String phone, @NonNull String website, @NonNull String company) {
+    public AnotherUser(@NonNull String id, String userId, String name,
+                       String userName, String email, String address,
+                       String phone, String website, String company, String imageUrl) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -50,6 +53,7 @@ public class AnotherUser {
         this.phone = phone;
         this.website = website;
         this.company = company;
+        this.imageUrl = imageUrl;
     }
 
     @NonNull
@@ -61,75 +65,75 @@ public class AnotherUser {
         this.id = id;
     }
 
-    @NonNull
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(@NonNull String userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(@NonNull String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    @NonNull
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(@NonNull String userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    @NonNull
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(@NonNull String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    @NonNull
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(@NonNull String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    @NonNull
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(@NonNull String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    @NonNull
     public String getWebsite() {
         return website;
     }
 
-    public void setWebsite(@NonNull String website) {
+    public void setWebsite(String website) {
         this.website = website;
     }
 
-    @NonNull
     public String getCompany() {
         return company;
     }
 
-    public void setCompany(@NonNull String company) {
+    public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

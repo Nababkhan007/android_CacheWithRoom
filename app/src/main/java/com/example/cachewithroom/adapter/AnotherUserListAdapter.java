@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cachewithroom.R;
 import com.example.cachewithroom.room.AnotherUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,6 +38,10 @@ public class AnotherUserListAdapter extends RecyclerView.Adapter<AnotherUserList
     public void onBindViewHolder(@NonNull final AnotherUserListViewHolder anotherUserListViewHolder, int i) {
         final AnotherUser anotherUser = anotherUserList.get(i);
 
+        Picasso.get()
+                .load(anotherUser.getImageUrl())
+                .placeholder(R.drawable.ic_baseline_image_24)
+                .into(anotherUserListViewHolder.imageView);
         anotherUserListViewHolder.userIdTv.setText(context.getText(R.string.user_id_text) + ": " + anotherUser.getUserId());
         anotherUserListViewHolder.nameTv.setText(context.getText(R.string.name_text) + ": " + anotherUser.getName());
         anotherUserListViewHolder.userNameTv.setText(context.getText(R.string.user_name_text) + ": " + anotherUser.getUserName());
@@ -52,6 +58,7 @@ public class AnotherUserListAdapter extends RecyclerView.Adapter<AnotherUserList
     }
 
     public static class AnotherUserListViewHolder extends RecyclerView.ViewHolder {
+        private ImageView imageView;
         private TextView
                 userIdTv, nameTv, userNameTv,
                 emailTv, addressTv, phoneNumberTv,
@@ -59,6 +66,7 @@ public class AnotherUserListAdapter extends RecyclerView.Adapter<AnotherUserList
 
         AnotherUserListViewHolder(@NonNull View itemView) {
             super(itemView);
+            imageView = itemView.findViewById(R.id.imageViewId);
             userIdTv = itemView.findViewById(R.id.userIdTvId);
             nameTv = itemView.findViewById(R.id.nameTvId);
             userNameTv = itemView.findViewById(R.id.userNameTvId);

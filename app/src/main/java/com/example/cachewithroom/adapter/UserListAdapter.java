@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cachewithroom.R;
 import com.example.cachewithroom.interfaceClass.ReceiveUserInfo;
 import com.example.cachewithroom.pojoClass.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,7 +44,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     public void onBindViewHolder(@NonNull final UserListViewHolder userListViewHolder, int i) {
         final User user = userList.get(i);
 
+        String imageUrl = "https://images.unsplash.com/photo-1521981692502-26a9deeb1085?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
+
         if (internetConnection) {
+            Picasso.get()
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_baseline_image_24)
+                    .into(userListViewHolder.imageView);
             userListViewHolder.userIdTv.setText(context.getText(R.string.user_id_text) + ": " + user.getId());
             userListViewHolder.nameTv.setText(context.getText(R.string.name_text) + ": " + user.getName());
             userListViewHolder.userNameTv.setText(context.getText(R.string.user_name_text) + ": " + user.getUsername());
@@ -57,7 +65,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
             receiveUserInfo.userInfo(UUID.randomUUID().toString(), user.getId().toString(), user.getName(), user.getUsername(),
                     user.getEmail(), user.getAddress().getStreet() + " " + user.getAddress().getSuite()
                             + " " + user.getAddress().getCity() + " " + user.getAddress().getZipcode(),
-                    user.getPhone(), user.getWebsite(), user.getCompany().getName());
+                    user.getPhone(), user.getWebsite(), user.getCompany().getName(), imageUrl);
         }
     }
 
@@ -67,6 +75,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
     }
 
     public static class UserListViewHolder extends RecyclerView.ViewHolder {
+        private ImageView imageView;
         private TextView
                 userIdTv, nameTv, userNameTv,
                 emailTv, addressTv, phoneNumberTv,
@@ -74,6 +83,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
 
         UserListViewHolder(@NonNull View itemView) {
             super(itemView);
+            imageView = itemView.findViewById(R.id.imageViewId);
             userIdTv = itemView.findViewById(R.id.userIdTvId);
             nameTv = itemView.findViewById(R.id.nameTvId);
             userNameTv = itemView.findViewById(R.id.userNameTvId);

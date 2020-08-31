@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements ReceiveUserInfo {
 
     @Override
     public void userInfo(String id, String userId, String name, String userName, String email,
-                         String address, String phone, String website, String company) {
-        insert(new AnotherUser(id, userId, name, userName, email, address, phone, website, company));
+                         String address, String phone, String website, String company, String imageUrl) {
+        insert(new AnotherUser(id, userId, name, userName, email, address, phone, website, company, imageUrl));
     }
 }

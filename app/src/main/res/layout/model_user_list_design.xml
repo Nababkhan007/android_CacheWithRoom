@@ -6,9 +6,18 @@
     android:layout_margin="5dp"
     android:background="@color/colorAsh">
 
+    <ImageView
+        android:id="@+id/imageViewId"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_baseline_image_24"
+        tools:ignore="ContentDescription" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/imageViewId"
         android:layout_margin="10dp"
         android:orientation="vertical"
         tools:ignore="UselessParent">
